@@ -33,6 +33,8 @@ namespace VintageGamesCollector.Models
                               { ManufacturerId = 2, ManufacturerName = "Sierra" });
             modelBuilder.Entity<Manufacturer>().HasData(new Manufacturer
                               { ManufacturerId = 3, ManufacturerName = "Sid Meier" });
+            modelBuilder.Entity<Manufacturer>().HasData(new Manufacturer
+                              { ManufacturerId = 4, ManufacturerName = "Microprose" });
 
 
             //seed Grade
@@ -63,14 +65,33 @@ namespace VintageGamesCollector.Models
             {
                 GameId = 1,
                 GameName = "Leisure suit Larry 1",
+                GameTypeId = 1,
                 PlayedLevel = "Beginner",
+                ManufacturerId = 2,
+                PlatformId = 4,
+                GradeId = 1,
                 LastPlayed = DateTime.Now
-            });
+            }) ;
             modelBuilder.Entity<Game>().HasData(new Game
             {
                 GameId = 2,
                 GameName = "Civilization 5",
+                GameTypeId = 3,
                 PlayedLevel = "Expert",
+                ManufacturerId = 3,
+                PlatformId = 3,
+                GradeId = 1,
+                LastPlayed = DateTime.Now
+            });
+            modelBuilder.Entity<Game>().HasData(new Game
+            {
+                GameId = 3,
+                GameName = "X-com: Terror from the deep",
+                GameTypeId = 3,
+                PlayedLevel = "Expert",
+                ManufacturerId = 4,
+                PlatformId = 1,
+                GradeId = 1,
                 LastPlayed = DateTime.Now
             });
         }

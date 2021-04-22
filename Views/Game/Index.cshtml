@@ -6,7 +6,7 @@
 
 <div class="text-center">
     <div class="col-2">
-        <h3 class="display-4">Welcome to Vintage Games Collector</h3>
+        @*<h5 class="display-8">Welcome to Vintage Games Collector</h5>*@
     </div>
 </div>
 
@@ -14,10 +14,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.GameName )
+                @Html.DisplayNameFor(model => model.GameName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GameType.GameTypeName)
+                @Html.DisplayNameFor(model => model.GameTypeId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LastPlayed)
@@ -33,7 +33,7 @@
                     @Html.DisplayFor(modelItem => item.GameName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.GameType.GameTypeName)
+                    @Html.DisplayFor(modelItem => item.GameTypeId)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LastPlayed)

@@ -14,7 +14,6 @@ namespace VintageGamesCollector.Models
     {
         [Key]
         public int PlatformId { get; set; }
-
         public string PlatformName { get; set; }
         public string PlatformVersion { get; set; }
 
