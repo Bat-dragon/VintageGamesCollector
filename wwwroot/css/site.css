@@ -24,6 +24,8 @@ a {
   border-color: #1861ac;
 }
 
+
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -34,6 +36,7 @@ html {
     font-size: 16px;
   }
 }
+
 
 .border-top {
   border-top: 1px solid #e5e5e5;
@@ -69,15 +72,20 @@ body {
 /*Jimmy indsat 2021-04-22  Logo size*/
 #logo {
     width: 70px;
-    margin-right:10px;
+    margin-right: 5px;
 }
-.lead {
+/*.lead {
     width:20px;
-}
+}*/
 
 /*Jimmy indsat 2021-04-23  Form input on same row*/
-.form-group, control-label, form-control {
-    display: flex;
+#form-group {
+    display: inline-flex;
+    flex-wrap: nowrap;
+}
+
+.form-group {
+    display: inline-flex;
     flex-wrap: nowrap;
 }
 
