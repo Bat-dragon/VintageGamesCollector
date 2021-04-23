@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using VintageGamesCollector.Models;
@@ -25,13 +26,14 @@ namespace VintageGamesCollector.Controllers
         // GET: GameController
         public async Task<ActionResult> Index()
         {
-            var myData = await _context.Games.Where(g => g.GameId != 0).ToListAsync();
-            var test = (from g in _context.Games
+            //var myData = await _context.Games.Where(g => g.GameId != 0).ToListAsync();
+            var gameFull = await (from g in _context.Games
                        join m in _context.Manufacturers on g.ManufacturerId equals m.ManufacturerId
                        join p in _context.GamePlatforms on g.PlatformId equals p.PlatformId
                        join r in _context.Grades on g.GradeId equals r.GradeId
                        join t in _context.GameTypes on g.GameTypeId equals t.GameTypeId
-                       select new { 
+                       select new GameFull{ 
+                           GameId = g.GameId,
                            Name = g.GameName,
                            Type = t.GameTypeName,
                            Platform= p.PlatformName,
@@ -39,13 +41,13 @@ namespace VintageGamesCollector.Controllers
                            Manufacturer = m.ManufacturerName,
                            Grade = r.GradeText,
                            LastPlayed = g.LastPlayed,
-                           PlayLevel = g.PlayedLevel,
-                           Image = g.GameImage
+                           PlayedLevel = g.PlayedLevel,
+                           GameImage = g.GameImage
                        }).ToListAsync();
 
 
             //return View(myData);
-            return View(test);
+            return View(gameFull);
         }
 
 
@@ -84,12 +86,32 @@ namespace VintageGamesCollector.Controllers
 
 
         // GET: GameController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
 
-            var GType = _context.GameTypes.Where(g => g.GameTypeId != 0).ToList();
-            return View();
+           // var game = await _context.Games.Where(g => g.GameTypeId == id).ToListAsync();
+            var GameFull = await (from g in _context.Games.Where(g => g.GameId == id)
+                                  join m in _context.Manufacturers on g.ManufacturerId equals m.ManufacturerId
+                                  join p in _context.GamePlatforms on g.PlatformId equals p.PlatformId
+                                  join r in _context.Grades on g.GradeId equals r.GradeId
+                                  join t in _context.GameTypes on g.GameTypeId equals t.GameTypeId
+                                  //where g.GameId == id
+                                  select new GameFull
+                                  {
+                                      GameId = g.GameId,
+                                      Name = g.GameName,
+                                      Type = t.GameTypeName,
+                                      Platform = p.PlatformName,
+                                      Version = p.PlatformVersion,
+                                      Manufacturer = m.ManufacturerName,
+                                      Grade = r.GradeText,
+                                      LastPlayed = g.LastPlayed,
+                                      PlayedLevel = g.PlayedLevel,
+                                      GameImage = g.GameImage
+                                  }).SingleOrDefaultAsync();
+            return View(GameFull);
         }
+
 
         // POST: GameController/Edit/5
         [HttpPost]
