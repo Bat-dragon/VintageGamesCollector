@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using VintageGamesCollector.Models;
@@ -13,8 +14,7 @@ namespace VintageGamesCollector.Controllers
     public class GameController : Controller
     {
         private readonly GamesDBContext _context;
-
-
+        private byte[] imageBuffer;
 
         public GameController(GamesDBContext context)
         {
@@ -45,6 +45,12 @@ namespace VintageGamesCollector.Controllers
                            GameImage = g.GameImage
                        }).ToListAsync();
 
+            // TEST !!!
+            ImageConverter converter = new ImageConverter();
+            //Bitmap imageObj = AspectRatio(String.Format("~" + i.ImageUrl));
+            byte[] testimg = gameFull[0].GameImage;
+            imageBuffer = (byte[])gameFull[0].GameImage;
+//            imageBuffer = (byte[])converter.ConvertTo(testimg, typeof(byte[]));
 
             //return View(myData);
             return View(gameFull);
@@ -118,15 +124,83 @@ namespace VintageGamesCollector.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
+            bool changed = false;
+            Game original = _context.Games.Find(id);  //Load the original record
+            foreach (var item in collection)
+            {
+                switch (item.Key)
+                {
+                   // case "GameId":    //Cannot be changed!!! 
+                       
+                    case "Name":
+                        if (original.GameName != item.Value)
+                        {
+                            changed = true;
+                            original.GameName = item.Value;
+                        }
+                        break;
+                    case "Type":
+                    case "Platform":
+                    case "Version":
+                    case "Manufacturer":
+                    case "Grade":
+                            //These will be done at a later time
+                            break;
+                    case "LastPlayed":
+                        if (original.LastPlayed != item.Value)
+                        {
+                            changed = true;
+                            original.LastPlayed = Convert.ToDateTime(item.Value);
+                        }
+                        break;
+                    case "PlayedLevel":
+                        if (original.PlayedLevel != item.Value)
+                        {
+                            changed = true;
+                            original.PlayedLevel = item.Value;
+                        }
+                        break;
+                    case "Image":
+                        if (item.Value != "")
+                        {
+                            //This is a temporary cheat, it will be fixed, if time permits!
+                            //The image OR the full filepath should be available here!!
+                            ToDo Remember;
+                            var filePath = "../VintageGamesCollector/Images/" + item.Value;
+                            FileInfo fileInfo = new FileInfo(filePath);
+                            byte[] imageToDB = new byte[fileInfo.Length];
+                            //convert the image to byte table
+                            using (FileStream fs = fileInfo.OpenRead())    // Load a filestream and put its content into the byte[]
+                            {
+                                fs.Read(imageToDB, 0, imageToDB.Length);
+                            }
+                            original.GameImage = imageToDB;
+                            changed = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (changed)  // If the original record was changed, do an update!!!
+            {
+                _context.Games.Update(original);
+                _context.SaveChanges();
+            }
+
             try
             {
                 return RedirectToAction(nameof(Index));
+                //return RedirectToAction(Index);
             }
             catch
             {
                 return View();
             }
         }
+
+
 
         // GET: GameController/Delete/5
         public ActionResult Delete(int id)

@@ -26,37 +26,32 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Game" asp-action="Create">New Game</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="GameType" asp-action="Index">Game types</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="GameType" asp-action="Index">Types</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Manufacturer" asp-action="Index">Game Manufacturers</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Manufacturer" asp-action="Index">Manufacturers</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Grade" asp-action="Index">Game Grades</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Grade" asp-action="Index">Grades</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
-
                         </ul>
                     </div>
                 </div>
             </nav>
             @*Jimmy indsat 2021-04-21*@
-        <span class="row">
-            <span class="col-md-1" width="60px">
-                <p class="lead">
-                    <img class="img-logo" id="logo" alt="Vintage Games Collector" src="~/Images/VintageGamesCollectorlogo.png" />
-                </p>
-            </span>
-            <span class="col-md-2">
-                <main role="main" class="pb-3">
-                    @RenderBody()
-                </main>
-
-                @*        </span>*@
-            </span>
-</header>
+            <span class="row">
+                <span class="col-md-1" width="60px">
+                    <p class="lead">
+                        <img class="img-logo" id="logo" alt="Vintage Games Collector" src="~/Images/VintageGamesCollectorlogo.png" />
+                    </p>
+                </span>
+                <span class="col-md-2">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
+                    @*        </span>*@
+                </span>
+        </header>
     </div>
 
 

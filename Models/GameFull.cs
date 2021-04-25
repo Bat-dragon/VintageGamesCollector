@@ -29,5 +29,7 @@ namespace VintageGamesCollector.Models
         public DateTime LastPlayed { get; set; }
         [DisplayName("Level")]
         public string PlayedLevel { get; set; }
+        //test !!!
+        public byte[] imageBuffer;
     }
 }

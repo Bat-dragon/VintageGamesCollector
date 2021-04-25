@@ -72,8 +72,12 @@
                 @Html.DisplayFor(modelItem => item.PlayedLevel)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GameImage)
-                <img src ="item.GameImage" alt="Image" width="50">
+                @*     @Html.DisplayFor(modelItem => item.GameImage)*@
+                @if (item.GameImage != null)
+                {
+                    <img src="@String.Format("data:image/png;base64,{0}",Convert.ToBase64String(item.GameImage))" width="100" />
+                }
+
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.GameId">Edit</a> |
