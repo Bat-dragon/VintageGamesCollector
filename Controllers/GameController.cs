@@ -80,7 +80,7 @@ namespace VintageGamesCollector.Controllers
                 {
                     // case "GameId":    //DB set, don't touch!!! 
 
-                    case "Name": NewGame.GameName = item.Value; break;
+                    case "GameName": NewGame.GameName = item.Value; break;
                     case "LastPlayed": NewGame.LastPlayed = Convert.ToDateTime(item.Value); break;
                     case "PlayedLevel": NewGame.PlayedLevel = item.Value; break;
                     case "Image":
@@ -101,17 +101,23 @@ namespace VintageGamesCollector.Controllers
                         }
                         break;
                     //These will be done at a later time, currently only have "default" values :-(
-                    case "Type": NewGame.GameTypeId = 1; break;
-                    case "Platform":  NewGame.PlatformId = 1; break;
+                    case "GameTypeID": NewGame.GameTypeId = 1; break;
+                    case "PlatformID": NewGame.PlatformId = 1; break;
                     case "Version": break;
-                    case "Manufacturer": NewGame.ManufacturerId = 2; break;
-                    case "Grade": NewGame.GradeId = 2;  break;
+                    case "ManufacturerI": NewGame.ManufacturerId = 2; break;
+                    case "GradeId": NewGame.GradeId = 2; break;
                     default:
                         break;
                 }
             }
             //Validation and check for "cancel"? button?
             ToDo remember;
+
+            //temporary test solution, to be removed!!!
+            NewGame.GameTypeId = 1;
+            NewGame.PlatformId = 1;
+            NewGame.ManufacturerId = 2;
+            NewGame.GradeId = 2;
 
             _context.Games.Add(NewGame);
             _context.SaveChanges();
@@ -242,24 +248,31 @@ namespace VintageGamesCollector.Controllers
         // GET: GameController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (id != 0)
+            {
+                Game delGame = _context.Games.Find(id);
+                _context.Games.Remove(delGame);
+                _context.SaveChanges();
+            }
+            return RedirectToAction(nameof(Index));
+
         }
 
 
 
-        // POST: GameController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //// POST: GameController/Delete/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
     }
 }
