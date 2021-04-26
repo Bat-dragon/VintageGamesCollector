@@ -20,6 +20,7 @@ namespace VintageGamesCollector.Models
         public int ManufacturerId { get; set; }
         [DisplayName("Grade")]
         public int GradeId { get; set; }
+        [DisplayName("Image")]
         public byte[] GameImage { get; set; }
         [DisplayName("Last played")]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]

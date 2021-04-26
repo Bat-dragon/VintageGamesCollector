@@ -28,29 +28,23 @@ namespace VintageGamesCollector.Controllers
         {
             //var myData = await _context.Games.Where(g => g.GameId != 0).ToListAsync();
             var gameFull = await (from g in _context.Games
-                       join m in _context.Manufacturers on g.ManufacturerId equals m.ManufacturerId
-                       join p in _context.GamePlatforms on g.PlatformId equals p.PlatformId
-                       join r in _context.Grades on g.GradeId equals r.GradeId
-                       join t in _context.GameTypes on g.GameTypeId equals t.GameTypeId
-                       select new GameFull{ 
-                           GameId = g.GameId,
-                           Name = g.GameName,
-                           Type = t.GameTypeName,
-                           Platform= p.PlatformName,
-                           Version = p.PlatformVersion,
-                           Manufacturer = m.ManufacturerName,
-                           Grade = r.GradeText,
-                           LastPlayed = g.LastPlayed,
-                           PlayedLevel = g.PlayedLevel,
-                           GameImage = g.GameImage
-                       }).ToListAsync();
-
-            // TEST !!!
-            ImageConverter converter = new ImageConverter();
-            //Bitmap imageObj = AspectRatio(String.Format("~" + i.ImageUrl));
-            byte[] testimg = gameFull[0].GameImage;
-            imageBuffer = (byte[])gameFull[0].GameImage;
-//            imageBuffer = (byte[])converter.ConvertTo(testimg, typeof(byte[]));
+                                  join m in _context.Manufacturers on g.ManufacturerId equals m.ManufacturerId
+                                  join p in _context.GamePlatforms on g.PlatformId equals p.PlatformId
+                                  join r in _context.Grades on g.GradeId equals r.GradeId
+                                  join t in _context.GameTypes on g.GameTypeId equals t.GameTypeId
+                                  select new GameFull
+                                  {
+                                      GameId = g.GameId,
+                                      Name = g.GameName,
+                                      Type = t.GameTypeName,
+                                      Platform = p.PlatformName,
+                                      Version = p.PlatformVersion,
+                                      Manufacturer = m.ManufacturerName,
+                                      Grade = r.GradeText,
+                                      LastPlayed = g.LastPlayed,
+                                      PlayedLevel = g.PlayedLevel,
+                                      GameImage = g.GameImage
+                                  }).ToListAsync();
 
             //return View(myData);
             return View(gameFull);
@@ -79,6 +73,49 @@ namespace VintageGamesCollector.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
+            Game NewGame = new Game();
+            foreach (var item in collection)
+            {
+                switch (item.Key)
+                {
+                    // case "GameId":    //DB set!!! 
+
+                    case "Name": NewGame.GameName = item.Value; break;
+                    case "LastPlayed": NewGame.LastPlayed = Convert.ToDateTime(item.Value); break;
+                    case "PlayedLevel": NewGame.PlayedLevel = item.Value; break;
+                    case "Image":
+                        if (item.Value != "")
+                        {
+                            //This is a temporary cheat, it will be fixed, if time permits!
+                            //The image OR the full filepath should be available here!!
+                            ToDo Remember;
+                            var filePath = "../VintageGamesCollector/Images/" + item.Value;
+                            FileInfo fileInfo = new FileInfo(filePath);
+                            byte[] imageToDB = new byte[fileInfo.Length];
+                            //convert the image to byte table
+                            using (FileStream fs = fileInfo.OpenRead())    // Load a filestream and put its content into the byte[]
+                            {
+                                fs.Read(imageToDB, 0, imageToDB.Length);
+                            }
+                            NewGame.GameImage = imageToDB;
+                        }
+                        break;
+                    //These will be done at a later time, currently only have "default" values :-(
+                    case "Type": NewGame.GameTypeId = 1; break;
+                    case "Platform":  NewGame.PlatformId = 1; break;
+                    case "Version": break;
+                    case "Manufacturer": NewGame.ManufacturerId = 2; break;
+                    case "Grade": NewGame.GradeId = 2;  break;
+                    default:
+                        break;
+                }
+            }
+            //Validation and check for "cancel"? button?
+            ToDo remember;
+
+            _context.Games.Update(NewGame);
+            _context.SaveChanges();
+
             try
             {
                 return RedirectToAction(nameof(Index));
@@ -95,7 +132,7 @@ namespace VintageGamesCollector.Controllers
         public async Task<ActionResult> Edit(int id)
         {
 
-           // var game = await _context.Games.Where(g => g.GameTypeId == id).ToListAsync();
+            // var game = await _context.Games.Where(g => g.GameTypeId == id).ToListAsync();
             var GameFull = await (from g in _context.Games.Where(g => g.GameId == id)
                                   join m in _context.Manufacturers on g.ManufacturerId equals m.ManufacturerId
                                   join p in _context.GamePlatforms on g.PlatformId equals p.PlatformId
@@ -130,8 +167,8 @@ namespace VintageGamesCollector.Controllers
             {
                 switch (item.Key)
                 {
-                   // case "GameId":    //Cannot be changed!!! 
-                       
+                    // case "GameId":    //Cannot be changed!!! 
+
                     case "Name":
                         if (original.GameName != item.Value)
                         {
@@ -144,8 +181,8 @@ namespace VintageGamesCollector.Controllers
                     case "Version":
                     case "Manufacturer":
                     case "Grade":
-                            //These will be done at a later time
-                            break;
+                        //These will be done at a later time
+                        break;
                     case "LastPlayed":
                         if (original.LastPlayed != item.Value)
                         {

@@ -89,6 +89,24 @@ body {
     flex-wrap: nowrap;
 }
 
+.col-md-2 {
+    -ms-flex: 0 0 16.666667%;
+    flex: 0 0 16.666667%;
+    max-width: 25%;
+}
+
+#control-label {
+    border-block: 4px;
+}
+
+/*Name to the left of the input box!*/
+label {
+    // Allow labels to use `margin` for spacing. display: inline-block;
+    border-block: 4px;
+    margin-right:15px;
+}
+/*Jimmy indsat slut*/
+
 
 
 .footer {

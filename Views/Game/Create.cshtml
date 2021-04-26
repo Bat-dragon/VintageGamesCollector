@@ -4,41 +4,41 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create new game</h1>
+<h4>Create new game</h4>
 
-<h4>Game</h4>
 <hr />
 <div class="row">
-    <div class="col-2">
-        <form asp-action="View">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="GameName" class="control-label"></label>
-                <input asp-for="GameName" class="form-control" />
-                <span asp-validation-for="GameName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GameImage" class="control-label"></label>
-                <input class="form-control" type="file" name="Image" accept="image/*" />
-                @*<input asp-for="GameImage" class="form-control" />*@
-                <span asp-validation-for="GameImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastPlayed" class="control-label"></label>
-                <input asp-for="LastPlayed" class="form-control" />
-                <span asp-validation-for="LastPlayed" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PlayedLevel" class="control-label"></label>
-                <input asp-for="PlayedLevel" class="form-control" />
-                <span asp-validation-for="PlayedLevel" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+    @* <div class="col-2">*@
+    <form asp-action="View">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="GameId" />
+        <div class="form-group" id="form-group" style=" display: inline-flex">
+            <label asp-for="GameName" class="control-label"></label>
+            <input asp-for="GameName" class="form-control" />
+            <span asp-validation-for="GameName" class="text-danger"></span>
+        </div>
+        <div class="form-group" id="form-group" style=" display: inline-flex">
+            <label asp-for="GameImage" class="control-label"></label>
+            <input class="form-control" type="file" name="Image" accept="image/*" />
+            @*<input asp-for="GameImage" class="form-control" />*@
+            <span asp-validation-for="GameImage" class="text-danger"></span>
+        </div>
+        <div class="form-group" id="form-group" style=" display: inline-flex">
+            <label asp-for="LastPlayed" class="control-label"></label>
+            <input asp-for="LastPlayed" class="form-control" />
+            <span asp-validation-for="LastPlayed" class="text-danger"></span>
+        </div>
+        <div class="form-group" id="form-group" style=" display: inline-flex">
+            <label asp-for="PlayedLevel" class="control-label"></label>
+            <input asp-for="PlayedLevel" class="form-control" />
+            <span asp-validation-for="PlayedLevel" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
 </div>
+@*</div> *@
 
 <div>
     <a asp-action="Index">Back to List</a>
