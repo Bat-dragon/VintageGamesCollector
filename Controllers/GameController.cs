@@ -78,7 +78,7 @@ namespace VintageGamesCollector.Controllers
             {
                 switch (item.Key)
                 {
-                    // case "GameId":    //DB set!!! 
+                    // case "GameId":    //DB set, don't touch!!! 
 
                     case "Name": NewGame.GameName = item.Value; break;
                     case "LastPlayed": NewGame.LastPlayed = Convert.ToDateTime(item.Value); break;
@@ -113,7 +113,7 @@ namespace VintageGamesCollector.Controllers
             //Validation and check for "cancel"? button?
             ToDo remember;
 
-            _context.Games.Update(NewGame);
+            _context.Games.Add(NewGame);
             _context.SaveChanges();
 
             try
