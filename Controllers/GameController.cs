@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.ComponentModel;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -63,6 +65,15 @@ namespace VintageGamesCollector.Controllers
         // GET: GameController/Create
         public ActionResult Create()
         {
+            //Test dropdownlist :-(
+            //List<GameType> GameTypes = _context.GameTypes.Where(t => t.GameTypeId != 0).ToList();
+            IEnumerable<String> GameTypes = _context.GameTypes.Where(t => t.GameTypeId != 0)
+                .Select(n => n.GameTypeName)
+                .ToList();
+            ViewData["GameTypes"] = GameTypes;
+            
+            
+
             return View();
         }
 
