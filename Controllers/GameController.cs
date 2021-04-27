@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using VintageGamesCollector.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace VintageGamesCollector.Controllers
 {
@@ -65,14 +66,15 @@ namespace VintageGamesCollector.Controllers
         // GET: GameController/Create
         public ActionResult Create()
         {
-            //Test dropdownlist :-(
-            //List<GameType> GameTypes = _context.GameTypes.Where(t => t.GameTypeId != 0).ToList();
-            IEnumerable<String> GameTypes = _context.GameTypes.Where(t => t.GameTypeId != 0)
-                .Select(n => n.GameTypeName)
-                .ToList();
-            ViewData["GameTypes"] = GameTypes;
-            
-            
+            //Gametype dropdownlist creat
+            List<SelectListItem> GameTypeSelectList = new List<SelectListItem>();
+            List<GameType> GameTypeList = _context.GameTypes.Where(t => t.GameTypeId != 0).ToList();
+            foreach (var item in GameTypeList)
+            {
+                GameTypeSelectList.Add(new SelectListItem { Text = item.GameTypeName, Value = item.GameTypeId.ToString() });
+            }
+            ViewBag.GameTypes = GameTypeSelectList;
+
 
             return View();
         }

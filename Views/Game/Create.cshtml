@@ -5,11 +5,28 @@
 }
 
 <h4>Create new game</h4>
-@*Testing dropdownlist*@
 
-@Html.DropDownList("GameTypes", (SelectList)ViewData["GameTypes"]);
 
 @*Testing dropdownlist*@
+
+@*@{
+        ViewBag.Title = "Game type Select";
+    }*@
+
+@*@using (Html.BeginForm("CategoryChosen", "Home", FormMethod.Get))
+    {
+        <fieldset>
+            Game Type
+            @Html.DropDownList("GameTypes")
+            <p>
+                <input type="submit" value="Submit" />
+            </p>
+        </fieldset>
+    }*@
+
+@*Testing dropdownlist*@
+
+
 <hr />
 <div class="row">
     @* <div class="col-2">*@
@@ -20,6 +37,18 @@
             <label asp-for="GameName" class="control-label"></label>
             <input asp-for="GameName" class="form-control" />
             <span asp-validation-for="GameName" class="text-danger"></span>
+        </div>
+        <div class="form-group" id="form-group" style=" display: inline-flex">
+            @using (Html.BeginForm("CategoryChosen", "Home", FormMethod.Get))
+            {
+                <fieldset style=" display: inline-flex">
+                    <label asp-for="GameTypeId" class="control-label"></label>
+                    @Html.DropDownList("GameTypes")
+                    @*<p>
+                        <input type="submit" value="Submit" />
+                    </p>*@
+                </fieldset>
+            }
         </div>
         <div class="form-group" id="form-group" style=" display: inline-flex">
             <label asp-for="GameImage" class="control-label"></label>
