@@ -71,7 +71,7 @@ namespace VintageGamesCollector.Controllers
             newGame.LastPlayed = DateTime.Today;
 
 
-            //Gametype dropdownlist create
+            //Create Gametype dropdownlist
             List<SelectListItem> GameTypeSelectList = new List<SelectListItem>();
             List<GameType> GameTypeList = await _context.GameTypes.Where(t => t.GameTypeId != 0).ToListAsync();
             foreach (var item in GameTypeList)
@@ -81,7 +81,7 @@ namespace VintageGamesCollector.Controllers
             ViewBag.GameTypes = GameTypeSelectList;
 
 
-            //Manufacturer dropdownlist create
+            //Create Manufacturer dropdownlist
             List<SelectListItem> ManufacturerSelectList = new List<SelectListItem>();
             List<Manufacturer> ManufacturerList = await _context.Manufacturers.Where(t => t.ManufacturerId != 0).ToListAsync();
             foreach (var item in ManufacturerList)
@@ -89,6 +89,30 @@ namespace VintageGamesCollector.Controllers
                 ManufacturerSelectList.Add(new SelectListItem { Text = item.ManufacturerName, Value = item.ManufacturerId.ToString(), Selected = false });
             }
             ViewBag.Manufacturer = ManufacturerSelectList;
+
+
+            //Create Platform dropdownlist
+            List<SelectListItem> PlatformSelectList = new List<SelectListItem>();
+            List<GamePlatform> PlatformList = await _context.GamePlatforms.Where(t => t.PlatformId != 0).ToListAsync();
+            foreach (var item in PlatformList)
+            {
+                PlatformSelectList.Add(new SelectListItem { Text = item.PlatformName +
+                                     " - Version " + item.PlatformVersion
+                                     , Value = item.PlatformId.ToString(), Selected = false });
+            }
+            ViewBag.Platforms = PlatformSelectList;
+
+
+            //Create Grade dropdownlist
+            List<SelectListItem> GradeSelectList = new List<SelectListItem>();
+            List<Grade> GradeList = await _context.Grades.Where(t => t.GradeId != 0).ToListAsync();
+            foreach (var item in GradeList)
+            {
+                GradeSelectList.Add(new SelectListItem { Text = item.GradeNumber +
+                                    " " + item.GradeText,
+                                    Value = item.GradeId.ToString(), Selected = false });
+            }
+            ViewBag.Grades = GradeSelectList;
 
             return View(newGame);
         }
@@ -108,6 +132,10 @@ namespace VintageGamesCollector.Controllers
                     // case "GameId":    //DB set, don't touch!!! 
 
                     case "GameName": NewGame.GameName = item.Value; break;
+                    case "Manufacturer": NewGame.ManufacturerId = Convert.ToInt32(item.Value); break;
+                    case "GradeId": NewGame.GradeId = Convert.ToInt32(item.Value); break;
+                    case "GameTypeID": NewGame.GameTypeId = Convert.ToInt32(item.Value); break;
+                    case "PlatformID": NewGame.PlatformId = Convert.ToInt32(item.Value); break;
                     case "LastPlayed": NewGame.LastPlayed = Convert.ToDateTime(item.Value); break;
                     case "PlayedLevel": NewGame.PlayedLevel = item.Value; break;
                     case "Image":
@@ -127,24 +155,11 @@ namespace VintageGamesCollector.Controllers
                             NewGame.GameImage = imageToDB;
                         }
                         break;
-                    //These will be done at a later time, currently only have "default" values :-(
-                    case "GameTypeID": NewGame.GameTypeId = 1; break;
-                    case "PlatformID": NewGame.PlatformId = 1; break;
-                    case "Version": break;
-                    case "ManufacturerI": NewGame.ManufacturerId = 2; break;
-                    case "GradeId": NewGame.GradeId = 2; break;
                     default:
                         break;
                 }
             }
-            //Validation and check for "cancel"? button?
-            ToDo remember;
-
-            //temporary test solution, to be removed!!!
-            NewGame.GameTypeId = 1;
-            NewGame.PlatformId = 1;
-            NewGame.ManufacturerId = 2;
-            NewGame.GradeId = 2;
+           ToDo remember;   //Validation ???
 
             _context.Games.Add(NewGame);
             _context.SaveChanges();

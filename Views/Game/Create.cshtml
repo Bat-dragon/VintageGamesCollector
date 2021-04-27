@@ -18,22 +18,40 @@
             <span asp-validation-for="GameName" class="text-danger"></span>
         </div>
         <div class="form-group" id="form-group" style=" display: inline-flex">
-            @using (Html.BeginForm("CategoryChosen", "Home", FormMethod.Get))
-            {
-                <fieldset style=" display: inline-flex">
-                    <label asp-for="GameTypeId" class="control-label"></label>
-                    @Html.DropDownList("GameTypes")
-                </fieldset>
-            }
+            @*@using (Html.BeginForm("CategoryChosen", "Home", FormMethod.Get))
+            {*@
+            <fieldset style=" display: inline-flex">
+                <label asp-for="GradeId" class="control-label"></label>
+                @Html.DropDownList("Grades")
+            </fieldset>
+            @*}*@
         </div>
         <div class="form-group" id="form-group" style=" display: inline-flex">
-            @using (Html.BeginForm("ManufacturerChosen", "Home", FormMethod.Get))
-            {
-                <fieldset style=" display: inline-flex">
-                    <label asp-for="ManufacturerId" class="control-label"></label>
-                    @Html.DropDownList("Manufacturer")
-                </fieldset>
-            }
+            @*@using (Html.BeginForm("CategoryChosen", "Home", FormMethod.Get))
+            {*@
+            <fieldset style=" display: inline-flex">
+                <label asp-for="PlatformId" class="control-label"></label>
+                @Html.DropDownList("Platforms")
+            </fieldset>
+            @*}*@
+        </div>
+        <div class="form-group" id="form-group" style=" display: inline-flex">
+            @*@using (Html.BeginForm("CategoryChosen", "Home", FormMethod.Get))
+            {*@
+            <fieldset style=" display: inline-flex">
+                <label asp-for="GameTypeId" class="control-label"></label>
+                @Html.DropDownList("GameTypes")
+            </fieldset>
+            @*}*@
+        </div>
+        <div class="form-group" id="form-group" style=" display: inline-flex">
+            @*@using (Html.BeginForm("ManufacturerChosen", "Home", FormMethod.Get))
+            {*@
+            <fieldset style=" display: inline-flex">
+                <label asp-for="ManufacturerId" class="control-label"></label>
+                @Html.DropDownList("Manufacturer")
+            </fieldset>
+            @*}*@
         </div>
         <div class="form-group" id="form-group" style=" display: inline-flex">
             <label asp-for="GameImage" class="control-label"></label>
