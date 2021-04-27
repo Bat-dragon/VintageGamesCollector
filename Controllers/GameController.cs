@@ -133,9 +133,9 @@ namespace VintageGamesCollector.Controllers
 
                     case "GameName": NewGame.GameName = item.Value; break;
                     case "Manufacturer": NewGame.ManufacturerId = Convert.ToInt32(item.Value); break;
-                    case "GradeId": NewGame.GradeId = Convert.ToInt32(item.Value); break;
-                    case "GameTypeID": NewGame.GameTypeId = Convert.ToInt32(item.Value); break;
-                    case "PlatformID": NewGame.PlatformId = Convert.ToInt32(item.Value); break;
+                    case "Grades": NewGame.GradeId = Convert.ToInt32(item.Value); break;
+                    case "GameTypes": NewGame.GameTypeId = Convert.ToInt32(item.Value); break;
+                    case "Platforms": NewGame.PlatformId = Convert.ToInt32(item.Value); break;
                     case "LastPlayed": NewGame.LastPlayed = Convert.ToDateTime(item.Value); break;
                     case "PlayedLevel": NewGame.PlayedLevel = item.Value; break;
                     case "Image":
