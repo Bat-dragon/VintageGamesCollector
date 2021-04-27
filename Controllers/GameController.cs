@@ -64,26 +64,40 @@ namespace VintageGamesCollector.Controllers
 
 
         // GET: GameController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            //Gametype dropdownlist creat
+            Game newGame = new Game();
+            newGame.GameName = "Name of the game";
+            newGame.LastPlayed = DateTime.Today;
+
+
+            //Gametype dropdownlist create
             List<SelectListItem> GameTypeSelectList = new List<SelectListItem>();
-            List<GameType> GameTypeList = _context.GameTypes.Where(t => t.GameTypeId != 0).ToList();
+            List<GameType> GameTypeList = await _context.GameTypes.Where(t => t.GameTypeId != 0).ToListAsync();
             foreach (var item in GameTypeList)
             {
-                GameTypeSelectList.Add(new SelectListItem { Text = item.GameTypeName, Value = item.GameTypeId.ToString() });
+                GameTypeSelectList.Add(new SelectListItem { Text = item.GameTypeName, Value = item.GameTypeId.ToString(), Selected = false });
             }
             ViewBag.GameTypes = GameTypeSelectList;
 
 
-            return View();
+            //Manufacturer dropdownlist create
+            List<SelectListItem> ManufacturerSelectList = new List<SelectListItem>();
+            List<Manufacturer> ManufacturerList = await _context.Manufacturers.Where(t => t.ManufacturerId != 0).ToListAsync();
+            foreach (var item in ManufacturerList)
+            {
+                ManufacturerSelectList.Add(new SelectListItem { Text = item.ManufacturerName, Value = item.ManufacturerId.ToString(), Selected = false });
+            }
+            ViewBag.Manufacturer = ManufacturerSelectList;
+
+            return View(newGame);
         }
 
 
 
         // POST: GameController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+//        [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
             Game NewGame = new Game();
@@ -150,7 +164,6 @@ namespace VintageGamesCollector.Controllers
         // GET: GameController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-
             // var game = await _context.Games.Where(g => g.GameTypeId == id).ToListAsync();
             var GameFull = await (from g in _context.Games.Where(g => g.GameId == id)
                                   join m in _context.Manufacturers on g.ManufacturerId equals m.ManufacturerId
