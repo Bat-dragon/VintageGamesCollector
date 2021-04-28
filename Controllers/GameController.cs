@@ -36,8 +36,7 @@ namespace VintageGamesCollector.Controllers
                                   join r in _context.Grades on g.GradeId equals r.GradeId
                                   join t in _context.GameTypes on g.GameTypeId equals t.GameTypeId
                                   select new GameFull
-                                  {
-                                      GameId = g.GameId,
+                                  {   GameId = g.GameId,
                                       Name = g.GameName,
                                       Type = t.GameTypeName,
                                       Platform = p.PlatformName,
@@ -70,48 +69,20 @@ namespace VintageGamesCollector.Controllers
             newGame.GameName = "Name of the game";
             newGame.LastPlayed = DateTime.Today;
 
-
             //Create Gametype dropdownlist
-            List<SelectListItem> GameTypeSelectList = new List<SelectListItem>();
-            List<GameType> GameTypeList = await _context.GameTypes.Where(t => t.GameTypeId != 0).ToListAsync();
-            foreach (var item in GameTypeList)
-            {
-                GameTypeSelectList.Add(new SelectListItem { Text = item.GameTypeName, Value = item.GameTypeId.ToString(), Selected = false });
-            }
+            List<SelectListItem> GameTypeSelectList = await CreateDropDowns("GameType");
             ViewBag.GameTypes = GameTypeSelectList;
 
-
             //Create Manufacturer dropdownlist
-            List<SelectListItem> ManufacturerSelectList = new List<SelectListItem>();
-            List<Manufacturer> ManufacturerList = await _context.Manufacturers.Where(t => t.ManufacturerId != 0).ToListAsync();
-            foreach (var item in ManufacturerList)
-            {
-                ManufacturerSelectList.Add(new SelectListItem { Text = item.ManufacturerName, Value = item.ManufacturerId.ToString(), Selected = false });
-            }
+            List<SelectListItem> ManufacturerSelectList = await CreateDropDowns("Manufacturer"); 
             ViewBag.Manufacturer = ManufacturerSelectList;
 
-
             //Create Platform dropdownlist
-            List<SelectListItem> PlatformSelectList = new List<SelectListItem>();
-            List<GamePlatform> PlatformList = await _context.GamePlatforms.Where(t => t.PlatformId != 0).ToListAsync();
-            foreach (var item in PlatformList)
-            {
-                PlatformSelectList.Add(new SelectListItem { Text = item.PlatformName +
-                                     " - Version " + item.PlatformVersion
-                                     , Value = item.PlatformId.ToString(), Selected = false });
-            }
+            List<SelectListItem> PlatformSelectList = await CreateDropDowns("Platform");
             ViewBag.Platforms = PlatformSelectList;
 
-
             //Create Grade dropdownlist
-            List<SelectListItem> GradeSelectList = new List<SelectListItem>();
-            List<Grade> GradeList = await _context.Grades.Where(t => t.GradeId != 0).ToListAsync();
-            foreach (var item in GradeList)
-            {
-                GradeSelectList.Add(new SelectListItem { Text = item.GradeNumber +
-                                    " " + item.GradeText,
-                                    Value = item.GradeId.ToString(), Selected = false });
-            }
+            List<SelectListItem> GradeSelectList = await CreateDropDowns("Grade");
             ViewBag.Grades = GradeSelectList;
 
             return View(newGame);
@@ -119,9 +90,10 @@ namespace VintageGamesCollector.Controllers
 
 
 
+
         // POST: GameController/Create
         [HttpPost]
-//        [ValidateAntiForgeryToken]
+        //        [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
             Game NewGame = new Game();
@@ -159,7 +131,7 @@ namespace VintageGamesCollector.Controllers
                         break;
                 }
             }
-           ToDo remember;   //Validation ???
+            ToDo remember;   //Validation ???
 
             _context.Games.Add(NewGame);
             _context.SaveChanges();
@@ -199,6 +171,23 @@ namespace VintageGamesCollector.Controllers
                                       PlayedLevel = g.PlayedLevel,
                                       GameImage = g.GameImage
                                   }).SingleOrDefaultAsync();
+
+            //Create Gametype dropdownlist
+            List<SelectListItem> GameTypeSelectList = await CreateDropDowns("GameType");
+            ViewBag.GameTypes = GameTypeSelectList;
+
+            //Create Manufacturer dropdownlist
+            List<SelectListItem> ManufacturerSelectList = await CreateDropDowns("Manufacturer");
+            ViewBag.Manufacturer = ManufacturerSelectList;
+
+            //Create Platform dropdownlist
+            List<SelectListItem> PlatformSelectList = await CreateDropDowns("Platform");
+            ViewBag.Platforms = PlatformSelectList;
+
+            //Create Grade dropdownlist
+            List<SelectListItem> GradeSelectList = await CreateDropDowns("Grade");
+            ViewBag.Grades = GradeSelectList;
+
             return View(GameFull);
         }
 
@@ -214,8 +203,6 @@ namespace VintageGamesCollector.Controllers
             {
                 switch (item.Key)
                 {
-                    // case "GameId":    //Cannot be changed!!! 
-
                     case "Name":
                         if (original.GameName != item.Value)
                         {
@@ -223,13 +210,10 @@ namespace VintageGamesCollector.Controllers
                             original.GameName = item.Value;
                         }
                         break;
-                    case "Type":
-                    case "Platform":
-                    case "Version":
-                    case "Manufacturer":
-                    case "Grade":
-                        //These will be done at a later time
-                        break;
+                    case "Type": original.GameTypeId = Convert.ToInt32(item.Value); break;
+                    case "Platform": original.PlatformId = Convert.ToInt32(item.Value); break;
+                    case "Manufacturer": original.ManufacturerId = Convert.ToInt32(item.Value); break;
+                    case "Grade": original.GradeId = Convert.ToInt32(item.Value); break;
                     case "LastPlayed":
                         if (original.LastPlayed != item.Value)
                         {
@@ -247,9 +231,8 @@ namespace VintageGamesCollector.Controllers
                     case "Image":
                         if (item.Value != "")
                         {
-                            //This is a temporary cheat, it will be fixed, if time permits!
-                            //The image OR the full filepath should be available here!!
-                            ToDo Remember;
+                            //The full filepath is seldom present in the browsers so it is a
+                            //requirement that the image is put in the '../Image/' folder!!!
                             var filePath = "../VintageGamesCollector/Images/" + item.Value;
                             FileInfo fileInfo = new FileInfo(filePath);
                             byte[] imageToDB = new byte[fileInfo.Length];
@@ -296,6 +279,69 @@ namespace VintageGamesCollector.Controllers
                 _context.SaveChanges();
             }
             return RedirectToAction(nameof(Index));
+
+        }
+
+
+
+        private async Task<List<SelectListItem>> CreateDropDowns(string type)
+        {
+            //Since these are used BOTH by "Create" and "EDIT",
+            //the original values is lost during an "edit" :-(
+            switch (type)
+            {
+                case "GameType":
+                    List<SelectListItem> GameTypeSelectList = new List<SelectListItem>();
+                    List<GameType> GameTypeList = await _context.GameTypes.Where(t => t.GameTypeId != 0).ToListAsync();
+                    foreach (var item in GameTypeList)
+                    {
+                        GameTypeSelectList.Add(new SelectListItem { Text = item.GameTypeName, Value = item.GameTypeId.ToString(), Selected = false });
+                    }
+
+                    return GameTypeSelectList;
+
+                case "Manufacturer":
+                    List<SelectListItem> ManufacturerSelectList = new List<SelectListItem>();
+                    List<Manufacturer> ManufacturerList = await _context.Manufacturers.Where(t => t.ManufacturerId != 0).ToListAsync();
+                    foreach (var item in ManufacturerList)
+                    {
+                        ManufacturerSelectList.Add(new SelectListItem { Text = item.ManufacturerName, Value = item.ManufacturerId.ToString(), Selected = false });
+                    }
+                    return ManufacturerSelectList;
+
+                case "Platform":
+                    List<SelectListItem> PlatformSelectList = new List<SelectListItem>();
+                    List<GamePlatform> PlatformList = await _context.GamePlatforms.Where(t => t.PlatformId != 0).ToListAsync();
+                    foreach (var item in PlatformList)
+                    {
+                        PlatformSelectList.Add(new SelectListItem
+                        {
+                            Text = item.PlatformName +
+                                             " - Version " + item.PlatformVersion
+                                             ,
+                            Value = item.PlatformId.ToString(),
+                            Selected = false
+                        });
+                    }
+                    return PlatformSelectList;
+
+                case "Grade":
+                    List<SelectListItem> GradeSelectList = new List<SelectListItem>();
+                    List<Grade> GradeList = await _context.Grades.Where(t => t.GradeId != 0).ToListAsync();
+                    foreach (var item in GradeList)
+                    {
+                        GradeSelectList.Add(new SelectListItem
+                        {
+                            Text = item.GradeNumber +
+                                            " " + item.GradeText,
+                            Value = item.GradeId.ToString(),
+                            Selected = false
+                        });
+                    }
+                    return GradeSelectList;
+                default:
+                    return null;
+            }
 
         }
     }
