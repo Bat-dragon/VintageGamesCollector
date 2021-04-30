@@ -1,0 +1,4 @@
+
+Udestående
+
+i Grade->Create   Opacity = 0 på Gradenumber!

@@ -26,23 +26,23 @@ namespace VintageGamesCollector.Controllers
         }
 
 
-        // GET: Grades/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: Grades/Details/5
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var grade = await _context.Grades
-                .FirstOrDefaultAsync(m => m.GradeId == id);
-            if (grade == null)
-            {
-                return NotFound();
-            }
+        //    var grade = await _context.Grades
+        //        .FirstOrDefaultAsync(m => m.GradeId == id);
+        //    if (grade == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(grade);
-        }
+        //    return View(grade);
+        //}
 
 
         // GET: Grades/Create

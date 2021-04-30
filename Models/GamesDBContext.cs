@@ -35,12 +35,14 @@ namespace VintageGamesCollector.Models
                               { ManufacturerId = 3, ManufacturerName = "Sid Meier" });
             modelBuilder.Entity<Manufacturer>().HasData(new Manufacturer
                               { ManufacturerId = 4, ManufacturerName = "Microprose" });
+            modelBuilder.Entity<Manufacturer>().HasData(new Manufacturer
+                              { ManufacturerId = 5, ManufacturerName = "Blizzard" });
 
 
             //seed Grade
-            modelBuilder.Entity<Grade>().HasData(new Grade { GradeId = 1, GradeText = "Superb" });
-            modelBuilder.Entity<Grade>().HasData(new Grade { GradeId = 2, GradeText = "Good" });
-            modelBuilder.Entity<Grade>().HasData(new Grade { GradeId = 3, GradeText = "Bad" });
+            modelBuilder.Entity<Grade>().HasData(new Grade { GradeId = 1, GradeNumber = "01", GradeText = "Superb" });
+            modelBuilder.Entity<Grade>().HasData(new Grade { GradeId = 2, GradeNumber = "02", GradeText = "Good" });
+            modelBuilder.Entity<Grade>().HasData(new Grade { GradeId = 3, GradeNumber = "03", GradeText = "Bad" });
 
 
             //seed gametype

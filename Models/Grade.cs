@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
@@ -12,7 +13,9 @@ namespace VintageGamesCollector.Models
     public class Grade
     {
         public int GradeId { get; set; }
-        public int GradeNumber { get; set; }
+        [DisplayName("Number")]
+        public string GradeNumber { get; set; }
+        [DisplayName("Grade text")]
         public string GradeText { get; set; }
     }
 }

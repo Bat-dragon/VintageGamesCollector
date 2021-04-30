@@ -4,17 +4,18 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Grade</h4>
+<h3>Create new grade</h3>
 <hr />
+<br />
 <div class="row">
-    <div class="col-md-4">
+    @*<div class="col-md-4">*@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="GradeNumber" class="control-label"></label>
-                <input asp-for="GradeNumber" class="form-control" />
+                <input asp-for="GradeNumber" class="form-control" style="opacity: 1"/>
+                @* this opacity is overwritten later :-(  fix this!!*@
                 <span asp-validation-for="GradeNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -26,7 +27,7 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-    </div>
+    @*</div>*@
 </div>
 
 <div>
